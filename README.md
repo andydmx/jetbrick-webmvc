@@ -28,7 +28,7 @@ Dependency
 </dependency>
 ```
 
-Thirdpart Dependencies
+Thirdpart Integrations
 ---------------------------
 
 ```xml
@@ -47,6 +47,16 @@ Thirdpart Dependencies
     <artifactId>jetbrick-webmvc-gson</artifactId>
     <version>2.0</version>
 </dependency>
+<dependency>
+    <groupId>com.github.subchen</groupId>
+    <artifactId>jetbrick-webmvc-gson</artifactId>
+    <version>2.0</version>
+</dependency>
+<dependency>
+    <groupId>com.github.subchen</groupId>
+    <artifactId>jetbrick-webmvc-freemarker</artifactId>
+    <version>2.0</version>
+</dependency>
 ```
 
 Downloads
@@ -62,8 +72,10 @@ Downloads
     - [jetbrick-webmvc-fastjson-2.0-sources.jar][14]
     - [jetbrick-webmvc-gson-2.0.jar][15]
     - [jetbrick-webmvc-gson-2.0-sources.jar][16]
+    - [jetbrick-webmvc-freemarker-2.0.jar][17]
+    - [jetbrick-webmvc-freemarker-2.0-sources.jar][18]
 * Dependencies
-    - [jetbrick-commons-2.0.1.jar][21]
+    - [jetbrick-commons-2.0.3.jar][21]
     - [jetbrick-ioc-2.0.1.jar][22]
     - [slf4j-api-1.7.7.jar][23]
     - [javax.servlet-api-3.0.1.jar][24] (optional)
@@ -77,7 +89,9 @@ Downloads
 [14]: http://search.maven.org/remotecontent?filepath=com/github/subchen/jetbrick-webmvc-fastjson/2.0/jetbrick-webmvc-fastjson-2.0-sources.jar
 [15]: http://search.maven.org/remotecontent?filepath=com/github/subchen/jetbrick-webmvc-gson/2.0/jetbrick-webmvc-gson-2.0.jar
 [16]: http://search.maven.org/remotecontent?filepath=com/github/subchen/jetbrick-webmvc-gson/2.0/jetbrick-webmvc-gson-2.0-sources.jar
-[21]: http://search.maven.org/remotecontent?filepath=com/github/subchen/jetbrick-commons/2.0.1/jetbrick-commons-2.0.1.jar
+[17]: http://search.maven.org/remotecontent?filepath=com/github/subchen/jetbrick-webmvc-freemarker/2.0/jetbrick-webmvc-freemarker-2.0.jar
+[18]: http://search.maven.org/remotecontent?filepath=com/github/subchen/jetbrick-webmvc-freemarker/2.0/jetbrick-webmvc-freemarker-2.0-sources.jar
+[21]: http://search.maven.org/remotecontent?filepath=com/github/subchen/jetbrick-commons/2.0.3/jetbrick-commons-2.0.3.jar
 [22]: http://search.maven.org/remotecontent?filepath=com/github/subchen/jetbrick-ioc/2.0.1/jetbrick-ioc-2.0.1.jar
 [23]: http://search.maven.org/remotecontent?filepath=org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7.jar
 [24]: http://search.maven.org/remotecontent?filepath=javax/servlet/javax.servlet-api/3.0.1/javax.servlet-api-3.0.1.jar
