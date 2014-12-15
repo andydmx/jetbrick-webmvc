@@ -22,6 +22,7 @@ package jetbrick.web.mvc.action.annotation;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.servlet.http.HttpServletRequest;
+import jetbrick.bean.ParameterInfo;
 import jetbrick.io.IoUtils;
 import jetbrick.web.mvc.RequestContext;
 import com.alibaba.fastjson.JSON;
@@ -30,15 +31,13 @@ import com.alibaba.fastjson.JSONObject;
 public final class JSONObjectRequestBodyGetter implements RequestBodyGetter<JSONObject> {
 
     @Override
-    public JSONObject get(RequestContext ctx) {
+    public JSONObject get(RequestContext ctx, ParameterInfo parameter) throws IOException {
         HttpServletRequest request = ctx.getRequest();
         InputStream is = null;
         try {
             is = request.getInputStream();
             String body = IoUtils.toString(is, request.getCharacterEncoding());
             return JSON.parseObject(body);
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
         } finally {
             IoUtils.closeQuietly(is);
         }

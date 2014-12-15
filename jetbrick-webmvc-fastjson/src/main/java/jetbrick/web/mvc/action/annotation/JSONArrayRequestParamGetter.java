@@ -21,24 +21,19 @@ package jetbrick.web.mvc.action.annotation;
 
 import jetbrick.bean.ParameterInfo;
 import jetbrick.web.mvc.RequestContext;
-import jetbrick.web.mvc.WebConfig;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 
-public final class RequestBodyArgumentGetter implements AnnotatedArgumentGetter<RequestBody, Object> {
-    private ParameterInfo parameter;
-    private RequestBodyGetter<?> requestBodyGetter;
+public final class JSONArrayRequestParamGetter implements RequestParamGetter<JSONArray> {
 
     @Override
-    public void initialize(ArgumentContext<RequestBody> ctx) {
-        parameter = ctx.getParameter();
-        requestBodyGetter = WebConfig.getRequestBodyGetterResolver().resolve(ctx.getRawParameterType());
-        if (requestBodyGetter == null) {
-            throw new IllegalStateException("Unable to resolve RequestBodyGetter for " + ctx.getRawParameterType());
+    public JSONArray get(RequestContext ctx, ParameterInfo parameter, String name) {
+        String value = ctx.getParameter(name);
+        if (value == null) {
+            return null;
+        } else {
+            return JSON.parseArray(value);
         }
-    }
-
-    @Override
-    public Object get(RequestContext ctx) throws Exception {
-        return requestBodyGetter.get(ctx, parameter);
     }
 
 }

@@ -17,28 +17,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jetbrick.web.mvc;
+package jetbrick.web.mvc.action.annotation;
 
-import java.io.IOException;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import jetbrick.bean.ParameterInfo;
+import jetbrick.web.mvc.RequestContext;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
-public final class DispatcherServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-    private Dispatcher dispatcher;
-
-    @Override
-    public void init() throws ServletException {
-        dispatcher = new Dispatcher(getServletContext(), getInitParameter("configLocation"));
-    }
+public final class JSONObjectRequestParamGetter implements RequestParamGetter<JSONObject> {
 
     @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        dispatcher.service(request, response);
+    public JSONObject get(RequestContext ctx, ParameterInfo parameter, String name) {
+        String value = ctx.getParameter(name);
+        if (value == null) {
+            return null;
+        } else {
+            return JSON.parseObject(value);
+        }
     }
 
-    @Override
-    public void destroy() {
-        dispatcher.destroy();
-    }
 }

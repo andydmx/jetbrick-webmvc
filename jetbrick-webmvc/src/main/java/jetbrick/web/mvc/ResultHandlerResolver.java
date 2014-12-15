@@ -21,11 +21,13 @@ package jetbrick.web.mvc;
 
 import java.util.IdentityHashMap;
 import java.util.Map;
+import javax.xml.bind.JAXBElement;
 import jetbrick.ioc.Ioc;
 import jetbrick.util.Validate;
 import jetbrick.web.mvc.result.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
 
 /**
  * 全局 ResultHandler 管理器
@@ -42,6 +44,8 @@ public final class ResultHandlerResolver {
         register(RawText.class, RawTextResultHandler.class);
         register(RawData.class, RawDataResultHandler.class);
         register(RawDownload.class, RawDownloadResultHandler.class);
+        register(Document.class, XmlDocumentResultHandler.class);
+        register(JAXBElement.class, JAXBElementResultHandler.class);
     }
 
     public void register(Class<?> resultClass, Class<?> resultHandlerClass) {

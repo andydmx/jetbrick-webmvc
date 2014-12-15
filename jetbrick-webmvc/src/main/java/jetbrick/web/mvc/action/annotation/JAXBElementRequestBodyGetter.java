@@ -19,26 +19,25 @@
  */
 package jetbrick.web.mvc.action.annotation;
 
+import javax.xml.bind.*;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
 import jetbrick.bean.ParameterInfo;
 import jetbrick.web.mvc.RequestContext;
-import jetbrick.web.mvc.WebConfig;
 
-public final class RequestBodyArgumentGetter implements AnnotatedArgumentGetter<RequestBody, Object> {
-    private ParameterInfo parameter;
-    private RequestBodyGetter<?> requestBodyGetter;
+public final class JAXBElementRequestBodyGetter implements RequestBodyGetter<JAXBElement<?>> {
 
     @Override
-    public void initialize(ArgumentContext<RequestBody> ctx) {
-        parameter = ctx.getParameter();
-        requestBodyGetter = WebConfig.getRequestBodyGetterResolver().resolve(ctx.getRawParameterType());
-        if (requestBodyGetter == null) {
-            throw new IllegalStateException("Unable to resolve RequestBodyGetter for " + ctx.getRawParameterType());
+    public JAXBElement<?> get(RequestContext ctx, ParameterInfo parameter) throws Exception {
+        Class<?> declaringClass = parameter.getDeclaringExecutable().getDeclaringKlass().getType();
+        Class<?> type = parameter.getRawComponentType(declaringClass, 0);
+        if (type == null) {
+            throw new IllegalStateException("Unable to unmarshal JAXB element, type is null");
         }
-    }
 
-    @Override
-    public Object get(RequestContext ctx) throws Exception {
-        return requestBodyGetter.get(ctx, parameter);
+        JAXBContext jc = JAXBContext.newInstance(type);
+        Unmarshaller unmarshaler = jc.createUnmarshaller();
+        Source source = new StreamSource(ctx.getRequest().getInputStream());
+        return unmarshaler.unmarshal(source, type);
     }
-
 }

@@ -19,26 +19,32 @@
  */
 package jetbrick.web.mvc.action.annotation;
 
+import java.io.StringReader;
+import javax.xml.parsers.*;
 import jetbrick.bean.ParameterInfo;
 import jetbrick.web.mvc.RequestContext;
-import jetbrick.web.mvc.WebConfig;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 
-public final class RequestBodyArgumentGetter implements AnnotatedArgumentGetter<RequestBody, Object> {
-    private ParameterInfo parameter;
-    private RequestBodyGetter<?> requestBodyGetter;
+public final class XmlDocumentRequestParamGetter implements RequestParamGetter<Document> {
+    private static final DocumentBuilder builder;
 
-    @Override
-    public void initialize(ArgumentContext<RequestBody> ctx) {
-        parameter = ctx.getParameter();
-        requestBodyGetter = WebConfig.getRequestBodyGetterResolver().resolve(ctx.getRawParameterType());
-        if (requestBodyGetter == null) {
-            throw new IllegalStateException("Unable to resolve RequestBodyGetter for " + ctx.getRawParameterType());
+    static {
+        try {
+            builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            throw new IllegalStateException(e);
         }
     }
 
     @Override
-    public Object get(RequestContext ctx) throws Exception {
-        return requestBodyGetter.get(ctx, parameter);
-    }
+    public Document get(RequestContext ctx, ParameterInfo parameter, String name) throws Exception {
+        String xml = ctx.getParameter(name);
+        if (xml == null || xml.length() == 0) {
+            return null;
+        }
 
+        InputSource is = new InputSource(new StringReader(xml));
+        return builder.parse(is);
+    }
 }

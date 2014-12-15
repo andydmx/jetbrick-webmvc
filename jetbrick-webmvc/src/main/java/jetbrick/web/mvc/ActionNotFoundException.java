@@ -17,13 +17,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jetbrick.web.mvc.action.annotation;
+package jetbrick.web.mvc;
 
-import jetbrick.bean.ParameterInfo;
-import jetbrick.web.mvc.RequestContext;
+public final class ActionNotFoundException extends WebException {
+    private static final long serialVersionUID = 1L;
 
-public interface RequestBodyGetter<T> {
+    public ActionNotFoundException() {
+        super();
+    }
 
-    public T get(RequestContext ctx, ParameterInfo parameter) throws Exception;
+    public ActionNotFoundException(String message) {
+        super(message);
+    }
 
+    public ActionNotFoundException(Throwable cause) {
+        super(cause);
+    }
+
+    public ActionNotFoundException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

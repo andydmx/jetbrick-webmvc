@@ -19,39 +19,34 @@
  */
 package jetbrick.web.mvc.result;
 
-import java.io.*;
-import javax.servlet.ServletOutputStream;
+import java.io.PrintWriter;
 import javax.servlet.http.HttpServletResponse;
-import jetbrick.io.IoUtils;
+import javax.xml.bind.*;
 import jetbrick.web.mvc.RequestContext;
+import jetbrick.web.mvc.WebConfig;
 
 /**
- * 负责文件下载.
+ * 输出  JAXMElement response.
  *
  * @author Guoqiang Chen
  */
-public final class RawDownloadResultHandler implements ResultHandler<RawDownload> {
+public final class JAXBElementResultHandler implements ResultHandler<JAXBElement<?>> {
 
     @Override
-    public void handle(RequestContext ctx, RawDownload result) throws IOException {
+    public void handle(RequestContext ctx, JAXBElement<?> jaxbElement) throws Exception {
         HttpServletResponse response = ctx.getResponse();
-        response.setContentType(result.getContentType());
+        response.setContentType("application/xml");
+        PrintWriter out = response.getWriter();
 
-        // 中文文件名支持
-        try {
-            String encodedFileName = new String(result.getFileName().getBytes(), "ISO8859-1");
-            response.setHeader("Content-Disposition", "attachment; filename=" + encodedFileName);
-        } catch (UnsupportedEncodingException e) {
+        JAXBContext jc = JAXBContext.newInstance(jaxbElement.getDeclaredType());
+        Marshaller marshaler = jc.createMarshaller();
+        marshaler.setProperty(Marshaller.JAXB_ENCODING, WebConfig.getHttpEncoding());
+        if (WebConfig.isDevelopment()) {
+            marshaler.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         }
-
-        ServletOutputStream out = response.getOutputStream();
-        InputStream is = result.getInputStream();
-        try {
-            IoUtils.copy(is, out);
-        } finally {
-            IoUtils.closeQuietly(is);
-        }
+        marshaler.marshal(jaxbElement, out);
 
         out.flush();
     }
+
 }

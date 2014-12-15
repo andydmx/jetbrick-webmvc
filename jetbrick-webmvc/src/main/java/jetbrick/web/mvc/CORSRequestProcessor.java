@@ -17,13 +17,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package jetbrick.web.mvc.action.annotation;
+package jetbrick.web.mvc;
 
-import jetbrick.bean.ParameterInfo;
-import jetbrick.web.mvc.RequestContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-public interface RequestBodyGetter<T> {
+/**
+ * 支持 CORS request.
+ *
+ * see <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS">HTTP access control (CORS)</a>
+ */
+public interface CORSRequestProcessor {
 
-    public T get(RequestContext ctx, ParameterInfo parameter) throws Exception;
+    public void setHeaders(HttpServletRequest request, HttpServletResponse response);
 
 }
